@@ -8,3 +8,6 @@ jupyter
 matplotlib
 sympy
 beautifulsoup4
+wget
+requests
+lxml

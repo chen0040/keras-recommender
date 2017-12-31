@@ -9,6 +9,7 @@ __pycache__/
 .idea/
 keras_recommender/training/very_large_data
 keras_recommender/training/data/posters
+notebooks
 
 # Distribution / packaging
 .Python

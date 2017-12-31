@@ -32,6 +32,10 @@ def main():
            rating_train=rating_train,
            model_dir_path=output_dir_path)
 
+    metrics = cf.evaluate(user_id_test=user_id_test,
+                item_id_test=item_id_test,
+                rating_test=rating_test)
+
 
 if __name__ == '__main__':
     main()

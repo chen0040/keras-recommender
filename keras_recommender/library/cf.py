@@ -2,6 +2,7 @@ from keras.models import Model
 from keras.callbacks import ModelCheckpoint
 from keras.layers import dot, concatenate, Embedding, Input, Flatten, Dropout, Dense
 import numpy as np
+from sklearn.metrics import mean_absolute_error
 
 EMBEDDING_SIZE = 100
 
@@ -80,6 +81,12 @@ class CollaborativeFilteringV1(object):
         predicted = self.model.predict([user_ids, item_ids])
         return predicted
 
+    def evaluate(self, user_id_test, item_id_test, rating_test):
+        test_preds = self.model.predict([user_id_test, item_id_test]).squeeze()
+        mae = mean_absolute_error(test_preds, rating_test)
+        print("Final test MAE: %0.3f" % mae)
+        return {'mae': mae}
+
 
 class CollaborativeFilteringV2(object):
     model_name = 'cf-v2'
@@ -157,3 +164,9 @@ class CollaborativeFilteringV2(object):
     def predict(self, user_ids, item_ids):
         predicted = self.model.predict([user_ids, item_ids])
         return predicted
+
+    def evaluate(self, user_id_test, item_id_test, rating_test):
+        test_preds = self.model.predict([user_id_test, item_id_test]).squeeze()
+        mae = mean_absolute_error(test_preds, rating_test)
+        print("Final test MAE: %0.3f" % mae)
+        return {'mae': mae}

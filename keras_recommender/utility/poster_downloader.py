@@ -16,9 +16,9 @@ def download_poster(movie_id):
 
 def download_posters(data_dir_path=None):
     if data_dir_path is None:
-        data_dir_path = '../training/data'
+        data_dir_path = '../training/data/ml-latest-small'
 
-    df_id = pd.read_csv(data_dir_path + '/ml-latest-small/links.csv', sep=',', dtype=object)
+    df_id = pd.read_csv(data_dir_path + '/links.csv', sep=',', dtype=object)
 
     movies = []
     for idx, imdb_id in enumerate(df_id['imdbId']):
@@ -30,7 +30,6 @@ def download_posters(data_dir_path=None):
 
     poster_path = data_dir_path + '/posters'
 
-    # random.shuffle(movies)
     for movie_id in movies:
         out = os.path.join(poster_path, str(movie_id) + '.jpg')
         if not os.path.exists(out):

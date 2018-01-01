@@ -66,7 +66,7 @@ class CollaborativeFilteringV1(object):
         np.save(CollaborativeFilteringV1.get_config_file_path(model_dir_path=model_dir_path), self.config)
 
         self.model = self.create_model()
-        open(CollaborativeFilteringV1.get_architecture_file_path(model_dir_path=model_dir_path)).write(self.model.to_json())
+        open(CollaborativeFilteringV1.get_architecture_file_path(model_dir_path=model_dir_path), 'w').write(self.model.to_json())
 
         weight_file_path = CollaborativeFilteringV1.get_weight_file_path(model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)

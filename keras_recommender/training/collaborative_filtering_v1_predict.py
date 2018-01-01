@@ -1,0 +1,39 @@
+from sklearn.model_selection import train_test_split
+import pandas as pd
+from keras_recommender.library.cf import CollaborativeFilteringV1
+
+
+def main():
+    data_dir_path = './data/ml-latest-small'
+    output_dir_path = './models'
+
+    all_ratings = pd.read_csv(data_dir_path + '/ratings.csv')
+    print(all_ratings.describe())
+
+    ratings_train, ratings_test = train_test_split(all_ratings, test_size=0.2, random_state=0)
+
+    user_id_test = ratings_test['userId']
+    item_id_test = ratings_test['movieId']
+    rating_test = ratings_test['rating']
+
+    max_user_id = all_ratings['userId'].max()
+    max_item_id = all_ratings['movieId'].max()
+
+    config = dict()
+    config['max_user_id'] = max_user_id
+    config['max_item_id'] = max_item_id
+
+    cf = CollaborativeFilteringV1()
+    cf.load_model(CollaborativeFilteringV1.get_config_file_path(output_dir_path),
+                  CollaborativeFilteringV1.get_weight_file_path(output_dir_path))
+
+    for i in range(20):
+        user_id = user_id_test[i]
+        item_id = item_id_test[i]
+        rating = rating_test[i]
+        predicted_rating = cf.predict(user_id, item_id)
+        print('predicted: ', predicted_rating, ' actual: ', rating)
+
+
+if __name__ == '__main__':
+    main()

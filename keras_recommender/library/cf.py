@@ -17,6 +17,13 @@ class CollaborativeFilteringV1(object):
         self.max_item_id = 0
         self.config = None
 
+    def load_model(self, config_file_path, weight_file_path):
+        self.config = np.load(config_file_path).item()
+        self.max_user_id = self.config['max_user_id']
+        self.max_item_id = self.config['max_item_id']
+        self.model = self.create_model()
+        self.model.load_weights(weight_file_path)
+
     @staticmethod
     def get_config_file_path(model_dir_path):
         return model_dir_path + '/' + CollaborativeFilteringV1.model_name + '-config.npy'
@@ -96,6 +103,13 @@ class CollaborativeFilteringV2(object):
         self.max_user_id = 0
         self.max_item_id = 0
         self.config = None
+
+    def load_model(self, config_file_path, weight_file_path):
+        self.config = np.load(config_file_path).item()
+        self.max_user_id = self.config['max_user_id']
+        self.max_item_id = self.config['max_item_id']
+        self.model = self.create_model()
+        self.model.load_weights(weight_file_path)
 
     @staticmethod
     def get_config_file_path(model_dir_path):

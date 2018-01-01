@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error
 
 EMBEDDING_SIZE = 100
-
+VERBOSE = 1
 
 class CollaborativeFilteringV1(object):
 
@@ -72,7 +72,7 @@ class CollaborativeFilteringV1(object):
         checkpoint = ModelCheckpoint(weight_file_path)
         history = self.model.fit([user_id_train, item_id_train], rating_train,
                                  batch_size=batch_size, epochs=epoches, validation_split=validation_split,
-                                 shuffle=True, verbose=2, callbacks=[checkpoint])
+                                 shuffle=True, verbose=VERBOSE, callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)
 
         return history
@@ -156,7 +156,7 @@ class CollaborativeFilteringV2(object):
         checkpoint = ModelCheckpoint(weight_file_path)
         history = self.model.fit([user_id_train, item_id_train], rating_train,
                                  batch_size=batch_size, epochs=epoches, validation_split=validation_split,
-                                 shuffle=True, verbose=2, callbacks=[checkpoint])
+                                 shuffle=True, verbose=VERBOSE, callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)
 
         return history

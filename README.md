@@ -9,8 +9,10 @@ The trained models an be found in keras_recommender/training/models
 
 * Collaborative Filtering V1: hidden factor analysis implementation of CF
     * training: keras_recommender/training/collaborative_filtering_v1.py
+    * predicting: keras_recommender/training/collaborative_filtering_v1_predict.py
 * Collaborative Filtering V2: CF with feedforward dense layer
     * training: keras_recommender/training/collaborative_filtering_v2.py
+    * predicting: keras_recommender/training/collaborative_filtering_v2_predict.py
 * CNN Content-Based Filtering: Use VGG16 for image simlarity on content-based filtering
     * training: keras_recommender/training/vgg16_content_based_filtering.py
 

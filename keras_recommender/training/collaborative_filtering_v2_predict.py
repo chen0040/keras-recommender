@@ -1,6 +1,6 @@
 from sklearn.model_selection import train_test_split
 import pandas as pd
-from keras_recommender.library.cf import CollaborativeFilteringV1
+from keras_recommender.library.cf import CollaborativeFilteringV2
 import numpy as np
 
 
@@ -22,13 +22,13 @@ def main():
     config['max_user_id'] = max_user_id
     config['max_item_id'] = max_item_id
 
-    cf = CollaborativeFilteringV1()
-    cf.load_model(CollaborativeFilteringV1.get_config_file_path(output_dir_path),
-                  CollaborativeFilteringV1.get_weight_file_path(output_dir_path))
+    cf = CollaborativeFilteringV2()
+    cf.load_model(CollaborativeFilteringV2.get_config_file_path(output_dir_path),
+                  CollaborativeFilteringV2.get_weight_file_path(output_dir_path))
 
     predicted_ratings = cf.predict(user_id_test, item_id_test)
     print(predicted_ratings)
-
+    
     for i in range(20):
         user_id = user_id_test[i]
         item_id = item_id_test[i]

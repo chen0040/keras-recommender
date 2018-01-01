@@ -28,7 +28,7 @@ def main():
     config['max_item_id'] = max_item_id
 
     cf = CollaborativeFilteringV2()
-    cf.fit(config=config, user_id_train=user_id_train,
+    history = cf.fit(config=config, user_id_train=user_id_train,
            item_id_train=item_id_train,
            rating_train=rating_train,
            model_dir_path=output_dir_path)

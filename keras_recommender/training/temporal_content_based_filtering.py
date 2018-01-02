@@ -16,6 +16,8 @@ def main():
     item_id_train = ratings_train['movieId']
     rating_train = ratings_train['rating']
 
+    print(timestamp_train.head())
+
     timestamp_test = ratings_test['timestamp']
     item_id_test = ratings_test['movieId']
     rating_test = ratings_test['rating']

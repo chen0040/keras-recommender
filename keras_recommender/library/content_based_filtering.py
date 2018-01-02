@@ -11,7 +11,6 @@ VERBOSE = 1
 
 
 class Vgg16ContentBaseFiltering(object):
-
     model_name = 'vgg16-cbf'
 
     def __init__(self):
@@ -56,7 +55,8 @@ class Vgg16ContentBaseFiltering(object):
         for i, (item_id, item_img) in enumerate(item_id2img.items()):
             print('Predicting for item = {}'.format(item_id))
             self.matrix_res[i, :] = self.model.predict(item_img).ravel()
-        np.savez_compressed(file=predictions_file, matrix_res=self.matrix_res, idx2id=self.matrix_idx_to_item_id, id2idx=self.item_id_to_matrix_idx)
+        np.savez_compressed(file=predictions_file, matrix_res=self.matrix_res, idx2id=self.matrix_idx_to_item_id,
+                            id2idx=self.item_id_to_matrix_idx)
 
         similarity_deep = self.matrix_res.dot(self.matrix_res.T)
         norms = np.array([np.sqrt(np.diagonal(similarity_deep))])
@@ -130,7 +130,8 @@ class TemporalContentBasedFiltering(object):
 
         return model
 
-    def fit(self, config, item_id_train, timestamp_train, rating_train, model_dir_path, batch_size=None, epoches=None, validation_split=None):
+    def fit(self, config, item_id_train, timestamp_train, rating_train, model_dir_path, batch_size=None, epoches=None,
+            validation_split=None):
         if batch_size is None:
             batch_size = 64
         if epoches is None:
@@ -159,7 +160,8 @@ class TemporalContentBasedFiltering(object):
         np.save(TemporalContentBasedFiltering.get_config_file_path(model_dir_path=model_dir_path), self.config)
 
         self.model = self.create_model()
-        open(TemporalContentBasedFiltering.get_architecture_file_path(model_dir_path=model_dir_path), 'w').write(self.model.to_json())
+        open(TemporalContentBasedFiltering.get_architecture_file_path(model_dir_path=model_dir_path), 'w').write(
+            self.model.to_json())
 
         weight_file_path = TemporalContentBasedFiltering.get_weight_file_path(model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)
@@ -171,11 +173,17 @@ class TemporalContentBasedFiltering(object):
         return history
 
     def predict(self, item_ids, timestamps):
+        timestamps = pd.Series([int(str(item_date)[-4:])
+                                for item_date in timestamps.tolist()], index=timestamps.index)
         timestamps = (timestamps - self.min_date) / (self.max_date - self.min_date)
+
+        print(timestamps.head())
         predicted = self.model.predict([item_ids, timestamps])
         return predicted
 
     def evaluate(self, item_id_test, timestamp_test, rating_test):
+        timestamp_test = pd.Series([int(str(item_date)[-4:])
+                                    for item_date in timestamp_test.tolist()], index=timestamp_test.index)
         timestamp_test = (timestamp_test - self.min_date) / (self.max_date - self.min_date)
         test_preds = self.model.predict([item_id_test, timestamp_test]).squeeze()
         mae = mean_absolute_error(test_preds, rating_test)
@@ -183,5 +191,9 @@ class TemporalContentBasedFiltering(object):
         return {'mae': mae}
 
     def predict_single(self, item_id, timestamp):
-        predicted = self.model.predict([pd.Series([item_id]), pd.Series([timestamp])])[0][0]
+        timestamps = pd.Series([timestamp])
+        timestamps = pd.Series([int(str(item_date)[-4:])
+                                for item_date in timestamps.tolist()], index=timestamps.index)
+        timestamps = (timestamps - self.min_date) / (self.max_date - self.min_date)
+        predicted = self.model.predict([pd.Series([item_id]), timestamps])[0][0]
         return predicted

@@ -130,7 +130,7 @@ class TemporalContentBasedFiltering(object):
 
         return model
 
-    def fit(self, config, item_id_train, date_train, rating_train, model_dir_path, batch_size=None, epoches=None, validation_split=None):
+    def fit(self, config, item_id_train, timestamp_train, rating_train, model_dir_path, batch_size=None, epoches=None, validation_split=None):
         if batch_size is None:
             batch_size = 64
         if epoches is None:
@@ -142,9 +142,9 @@ class TemporalContentBasedFiltering(object):
         self.max_item_id = config['max_item_id']
 
         parsed_dates = [int(str(item_date)[-4:])
-                        for item_date in date_train.tolist()]
+                        for item_date in timestamp_train.tolist()]
 
-        parsed_dates = pd.Series(parsed_dates, index=date_train.index)
+        parsed_dates = pd.Series(parsed_dates, index=timestamp_train.index)
         max_date = max(parsed_dates)
         min_date = min(parsed_dates)
 
@@ -154,7 +154,7 @@ class TemporalContentBasedFiltering(object):
         self.config['max_date'] = max_date
         self.config['min_date'] = min_date
 
-        date_train = (parsed_dates - min_date) / (max_date - min_date)
+        timestamp_train = (parsed_dates - min_date) / (max_date - min_date)
 
         np.save(TemporalContentBasedFiltering.get_config_file_path(model_dir_path=model_dir_path), self.config)
 
@@ -163,25 +163,25 @@ class TemporalContentBasedFiltering(object):
 
         weight_file_path = TemporalContentBasedFiltering.get_weight_file_path(model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)
-        history = self.model.fit([item_id_train, date_train], rating_train,
+        history = self.model.fit([item_id_train, timestamp_train], rating_train,
                                  batch_size=batch_size, epochs=epoches, validation_split=validation_split,
                                  shuffle=True, verbose=VERBOSE, callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)
 
         return history
 
-    def predict(self, item_ids, dates):
-        dates = (dates - self.min_date) / (self.max_date - self.min_date)
-        predicted = self.model.predict([item_ids, dates])
+    def predict(self, item_ids, timestamps):
+        timestamps = (timestamps - self.min_date) / (self.max_date - self.min_date)
+        predicted = self.model.predict([item_ids, timestamps])
         return predicted
 
-    def evaluate(self, item_id_test, dates_test, rating_test):
-        dates_test = (dates_test - self.min_date) / (self.max_date - self.min_date)
-        test_preds = self.model.predict([item_id_test, dates_test]).squeeze()
+    def evaluate(self, item_id_test, timestamps_test, rating_test):
+        timestamps_test = (timestamps_test - self.min_date) / (self.max_date - self.min_date)
+        test_preds = self.model.predict([item_id_test, timestamps_test]).squeeze()
         mae = mean_absolute_error(test_preds, rating_test)
         print("Final test MAE: %0.3f" % mae)
         return {'mae': mae}
 
-    def predict_single(self, item_id, date):
-        predicted = self.model.predict([pd.Series([item_id]), pd.Series([date])])[0][0]
+    def predict_single(self, item_id, timestamp):
+        predicted = self.model.predict([pd.Series([item_id]), pd.Series([timestamp])])[0][0]
         return predicted

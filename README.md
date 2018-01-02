@@ -16,6 +16,9 @@ The trained models an be found in keras_recommender/training/models
 * Collaborative Filtering V2: CF with feedforward dense layer
     * training: keras_recommender/training/collaborative_filtering_v2.py
     * predicting: keras_recommender/training/collaborative_filtering_v2_predict.py
+* Collaborative Filtering with Temporal Information: CF with feedforward dense layer and incorporate timestamp as input
+    * training: keras_recommender/training/collaborative_filtering_temporal.py
+    * predicting: keras_recommender/training/collaborative_filtering_temporal_predict.py
     
 ### Content-based Filtering Models
 
@@ -24,6 +27,7 @@ The trained models an be found in keras_recommender/training/models
     
 * Item-based Content-Based Filtering: Use timestamp information and item on content-based filtering
     * trainng: keras_recommender/training/temporal_content_based_filtering.py
+    * predicting: keras_recommender/training/temporal_content_based_filtering_predict.py
     
 # Usage
 

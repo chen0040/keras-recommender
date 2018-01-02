@@ -176,8 +176,6 @@ class TemporalContentBasedFiltering(object):
         timestamps = pd.Series([int(str(item_date)[-4:])
                                 for item_date in timestamps.tolist()], index=timestamps.index)
         timestamps = (timestamps - self.min_date) / (self.max_date - self.min_date)
-
-        print(timestamps.head())
         predicted = self.model.predict([item_ids, timestamps])
         return predicted
 

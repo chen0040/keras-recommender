@@ -296,15 +296,25 @@ class CollaborativeFilteringWithTemporalInformation(object):
         return history
 
     def predict(self, user_ids, item_ids, timestamps):
+        timestamps = pd.Series([int(str(item_date)[-4:])
+                                for item_date in timestamps.tolist()], index=timestamps.index)
+        timestamps = (timestamps - self.min_date) / (self.max_date - self.min_date)
         predicted = self.model.predict([user_ids, item_ids, timestamps])
         return predicted
 
     def evaluate(self, user_id_test, item_id_test, timestamp_test, rating_test):
+        timestamp_test = pd.Series([int(str(item_date)[-4:])
+                                    for item_date in timestamp_test.tolist()], index=timestamp_test.index)
+        timestamp_test = (timestamp_test - self.min_date) / (self.max_date - self.min_date)
         test_preds = self.model.predict([user_id_test, item_id_test, timestamp_test]).squeeze()
         mae = mean_absolute_error(test_preds, rating_test)
         print("Final test MAE: %0.3f" % mae)
         return {'mae': mae}
 
     def predict_single(self, user_id, item_id, timestamp):
-        predicted = self.model.predict([pd.Series([user_id]), pd.Series([item_id]), pd.Series([timestamp])])[0][0]
+        timestamps = pd.Series([timestamp])
+        timestamps = pd.Series([int(str(item_date)[-4:])
+                                for item_date in timestamps.tolist()], index=timestamps.index)
+        timestamps = (timestamps - self.min_date) / (self.max_date - self.min_date)
+        predicted = self.model.predict([pd.Series([user_id]), pd.Series([item_id]), timestamps])[0][0]
         return predicted

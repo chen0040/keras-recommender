@@ -7,10 +7,10 @@ def main():
     data_dir_path = './data/ml-latest-small'
     output_dir_path = './models'
 
-    all_ratings = pd.read_csv(data_dir_path + '/ratings.csv')
-    print(all_ratings.describe())
+    records = pd.read_csv(data_dir_path + '/ratings.csv')
+    print(records.describe())
 
-    ratings_train, ratings_test = train_test_split(all_ratings, test_size=0.2, random_state=0)
+    ratings_train, ratings_test = train_test_split(records, test_size=0.2, random_state=0)
 
     user_id_train = ratings_train['userId']
     item_id_train = ratings_train['movieId']
@@ -20,8 +20,8 @@ def main():
     item_id_test = ratings_test['movieId']
     rating_test = ratings_test['rating']
 
-    max_user_id = all_ratings['userId'].max()
-    max_item_id = all_ratings['movieId'].max()
+    max_user_id = records['userId'].max()
+    max_item_id = records['movieId'].max()
 
     config = dict()
     config['max_user_id'] = max_user_id

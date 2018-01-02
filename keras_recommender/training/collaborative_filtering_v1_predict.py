@@ -6,7 +6,7 @@ import numpy as np
 
 def main():
     data_dir_path = './data/ml-latest-small'
-    output_dir_path = './models'
+    trained_model_dir_path = './models'
 
     all_ratings = pd.read_csv(data_dir_path + '/ratings.csv')
     print(all_ratings.describe())
@@ -15,16 +15,9 @@ def main():
     item_id_test = all_ratings['movieId']
     rating_test = all_ratings['rating']
 
-    max_user_id = all_ratings['userId'].max()
-    max_item_id = all_ratings['movieId'].max()
-
-    config = dict()
-    config['max_user_id'] = max_user_id
-    config['max_item_id'] = max_item_id
-
     cf = CollaborativeFilteringV1()
-    cf.load_model(CollaborativeFilteringV1.get_config_file_path(output_dir_path),
-                  CollaborativeFilteringV1.get_weight_file_path(output_dir_path))
+    cf.load_model(CollaborativeFilteringV1.get_config_file_path(trained_model_dir_path),
+                  CollaborativeFilteringV1.get_weight_file_path(trained_model_dir_path))
 
     predicted_ratings = cf.predict(user_id_test, item_id_test)
     print(predicted_ratings)

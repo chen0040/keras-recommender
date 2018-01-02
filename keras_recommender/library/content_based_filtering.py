@@ -175,9 +175,9 @@ class TemporalContentBasedFiltering(object):
         predicted = self.model.predict([item_ids, timestamps])
         return predicted
 
-    def evaluate(self, item_id_test, timestamps_test, rating_test):
-        timestamps_test = (timestamps_test - self.min_date) / (self.max_date - self.min_date)
-        test_preds = self.model.predict([item_id_test, timestamps_test]).squeeze()
+    def evaluate(self, item_id_test, timestamp_test, rating_test):
+        timestamp_test = (timestamp_test - self.min_date) / (self.max_date - self.min_date)
+        test_preds = self.model.predict([item_id_test, timestamp_test]).squeeze()
         mae = mean_absolute_error(test_preds, rating_test)
         print("Final test MAE: %0.3f" % mae)
         return {'mae': mae}

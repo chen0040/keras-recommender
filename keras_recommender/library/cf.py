@@ -251,12 +251,12 @@ class CollaborativeFilteringWithTemporalInformation(object):
 
         y = Dense(1)(x)
 
-        model = Model(inputs=[user_id_input, item_id_input], outputs=[y])
+        model = Model(inputs=[user_id_input, item_id_input, meta_input], outputs=[y])
         model.compile(optimizer='adam', loss='mae')
 
         return model
 
-    def fit(self, config, user_id_train, item_id_train, rating_train, timestamp_train, model_dir_path, batch_size=None, epoches=None, validation_split=None):
+    def fit(self, config, user_id_train, item_id_train, timestamp_train, rating_train, model_dir_path, batch_size=None, epoches=None, validation_split=None):
         if batch_size is None:
             batch_size = 64
         if epoches is None:
@@ -288,7 +288,7 @@ class CollaborativeFilteringWithTemporalInformation(object):
 
         weight_file_path = CollaborativeFilteringWithTemporalInformation.get_weight_file_path(model_dir_path)
         checkpoint = ModelCheckpoint(weight_file_path)
-        history = self.model.fit([user_id_train, item_id_train], rating_train,
+        history = self.model.fit([user_id_train, item_id_train, timestamp_train], rating_train,
                                  batch_size=batch_size, epochs=epoches, validation_split=validation_split,
                                  shuffle=True, verbose=VERBOSE, callbacks=[checkpoint])
         self.model.save_weights(weight_file_path)

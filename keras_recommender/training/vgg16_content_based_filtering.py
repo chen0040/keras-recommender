@@ -7,6 +7,7 @@ import os
 import pickle
 from glob import glob
 
+
 def main():
     data_dir_path = './data/ml-latest-small'
     poster_dir_path = './data/posters'
@@ -19,7 +20,7 @@ def main():
     pd.set_option('display.width', 1000)
 
     df = pd.read_csv(data_dir_path + '/ratings.csv', sep=',')
-    df_id = pd.read_csv(data_dir_path + '/links.csv', sep=',', dtype=object, index_col=0)
+    df_id = pd.read_csv(data_dir_path + '/links.csv', sep=',')
     df_movie_names = pd.read_csv(data_dir_path + '/movies.csv', sep=',')
     df = pd.merge(pd.merge(df, df_id, on='movieId'), df_movie_names, on='movieId')
 

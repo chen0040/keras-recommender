@@ -12,3 +12,4 @@ wget
 requests
 lxml
 h5py
+pillow

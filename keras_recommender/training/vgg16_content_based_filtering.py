@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from keras.applications.vgg16 import preprocess_input
 from keras.preprocessing import image as kimage
-from keras_recommender.library.cnn import Vgg16ContentBaseFiltering
+from keras_recommender.library.content_based_filtering import Vgg16ContentBaseFiltering
 import os
 import pickle
 from glob import glob
@@ -40,8 +40,6 @@ def main():
 
     recommender = Vgg16ContentBaseFiltering()
     recommender.fit(imdb_id_to_image_dict, model_dir_path=output_dir_path)
-
-
 
 
 if __name__ == '__main__':

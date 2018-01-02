@@ -275,6 +275,8 @@ class CollaborativeFilteringWithTemporalInformation(object):
         max_date = max(parsed_dates)
         min_date = min(parsed_dates)
 
+        timestamp_train = (parsed_dates - min_date) / (max_date - min_date)
+
         self.max_date = max_date
         self.min_date = min_date
 

@@ -4,30 +4,30 @@ Recommender built using keras
 
 The dataset is taken from  [ml-latest-small (MovieLens)](https://grouplens.org/datasets/movielens/)
 
-The trained models an be found in keras_recommender/training/models
+The trained models an be found in demo/models
 
 # Deep Learning Models
 
 ### Collaborative Filtering Models
 
 * Collaborative Filtering V1: hidden factor analysis implementation of CF
-    * training: keras_recommender/training/collaborative_filtering_v1.py
-    * predicting: keras_recommender/training/collaborative_filtering_v1_predict.py
+    * training: [demo/collaborative_filtering_v1.py](demo/collaborative_filtering_v1.py)
+    * predicting: [demo/collaborative_filtering_v1_predict.py](demo/collaborative_filtering_v1_predict.py)
 * Collaborative Filtering V2: CF with feedforward dense layer
-    * training: keras_recommender/training/collaborative_filtering_v2.py
-    * predicting: keras_recommender/training/collaborative_filtering_v2_predict.py
+    * training: [demo/collaborative_filtering_v2.py](demo/collaborative_filtering_v2.py)
+    * predicting: [demo/collaborative_filtering_v2_predict.py](demo/collaborative_filtering_v2_predict.py)
 * Collaborative Filtering with Temporal Information: CF with feedforward dense layer and incorporate timestamp as input
-    * training: keras_recommender/training/collaborative_filtering_temporal.py
-    * predicting: keras_recommender/training/collaborative_filtering_temporal_predict.py
+    * training: [demo/collaborative_filtering_temporal.py](demo/collaborative_filtering_temporal.py)
+    * predicting: [demo/collaborative_filtering_temporal_predict.py](demo/collaborative_filtering_temporal_predict.py)
     
 ### Content-based Filtering Models
 
 * CNN Content-Based Filtering: Use VGG16 for image simlarity on content-based filtering
-    * training: keras_recommender/training/vgg16_content_based_filtering.py
+    * training: [demo/vgg16_content_based_filtering.py](demo/vgg16_content_based_filtering.py)
     
 * Item-based Content-Based Filtering: Use timestamp information and item on content-based filtering
-    * trainng: keras_recommender/training/temporal_content_based_filtering.py
-    * predicting: keras_recommender/training/temporal_content_based_filtering_predict.py
+    * trainng: [demo/temporal_content_based_filtering.py](demo/temporal_content_based_filtering.py)
+    * predicting: [demo/temporal_content_based_filtering_predict.py](demo/temporal_content_based_filtering_predict.py)
     
 # Usage
 
@@ -37,24 +37,25 @@ training and prediction patterns.
 
 ### Train CF model
 
-To train a CF model, say CollaborativeFilteringV1, run the following commands:
+To train a CF model, say [CollaborativeFilteringV1](keras_recommender/library/cf.py), run the following commands:
 
 ```bash
 pip install requirements.txt
 
-cd keras_recommender/training
+cd demo
 python collaborative_filtering_v1.py 
 ```
 
-The training code in collaborative_filtering_v1.py is quite straightforward and illustrated below:
+The training code in [collaborative_filtering_v1.py](demo/collaborative_filtering_v1.py) is quite straightforward and 
+illustrated below:
 
 ```python
 from sklearn.model_selection import train_test_split
 import pandas as pd
 from keras_recommender.library.cf import CollaborativeFilteringV1
 
-data_dir_path = './data/ml-latest-small' # refers to keras_recommender/training/data/ml-latest-small folder
-trained_model_dir_path = './models' # refers to keras_recommender/training/models folder
+data_dir_path = './data/ml-latest-small' # refers to demo/data/ml-latest-small folder
+trained_model_dir_path = './models' # refers to demo/models folder
 
 records = pd.read_csv(data_dir_path + '/ratings.csv')
 print(records.describe())
@@ -88,19 +89,20 @@ metrics = cf.evaluate(user_id_test=user_id_test,
 
 ```
 
-After the training is completed, the trained models will be saved as cf-v1-*.* in the keras_recommender/training/models.
+After the training is completed, the trained models will be saved as cf-v1-*.* in the demo/models.
 
 ### Predict Rating
 
-To use the trained CF model to predict the rating of an item by a user, you can use the following code:
+To use the trained CF model to predict the rating of an item by a user, you can use the following 
+[code](demo/collaborative_filtering_v1_predict.py):
 
 ```python
 
 from keras_recommender.library.cf import CollaborativeFilteringV1
 import pandas as pd
 
-data_dir_path = './data/ml-latest-small' # refers to keras_recommender/training/data/ml-latest-small folder
-trained_model_dir_path = './models' # refers to keras_recommender/training/models folder
+data_dir_path = './data/ml-latest-small' # refers to demo/data/ml-latest-small folder
+trained_model_dir_path = './models' # refers to demo/models folder
 
 records = pd.read_csv(data_dir_path + '/ratings.csv')
 print(records.describe())

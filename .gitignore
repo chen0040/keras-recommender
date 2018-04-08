@@ -7,8 +7,7 @@ __pycache__/
 *.so
 
 .idea/
-keras_recommender/training/very_large_data
-keras_recommender/training/data/posters
+demo/very_large_data
 notebooks
 
 # Distribution / packaging
